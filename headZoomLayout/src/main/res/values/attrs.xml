@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <declare-styleable name="HeadZoomLayout">
+    <!--头部视图id-->
+    <attr format="reference" name="headViewId" />
+    <!--头部最大放大比例-->
+    <attr format="float" name="maxZoomRatio" />
+    <!--是否可以放大头部-->
+    <attr format="boolean" name="zoomEnable" />
+    <!--最大拖拽距离-->
+    <attr format="float" name="maxDragDistance"/>
+    <!--放大加速度比例-->
+    <attr format="float" name="dragAccelerationRatio"/>
+  </declare-styleable>
+
+</resources>
