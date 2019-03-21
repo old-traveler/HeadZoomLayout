@@ -6,6 +6,10 @@
 
 [![](https://jitpack.io/v/old-traveler/HeadZoomLayout.svg)](https://jitpack.io/#old-traveler/HeadZoomLayout)
 
+## 效果展示
+
+![效果展示](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/show.gif)
+
 ## 使用示例
 
 
