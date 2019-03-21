@@ -43,7 +43,7 @@ dependencies {
           android:scaleType="centerCrop"
           android:src="@mipmap/test" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
           android:id="@+id/profile_image"
           android:layout_width="96dp"
           android:layout_height="96dp"
