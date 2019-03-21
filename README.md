@@ -1,5 +1,8 @@
 # HeadZoomLayout
 一个可以下拉放大头部背景图的布局控件
+支持LinearLayout、RecyclerView、ScrollView、NestedScrollView等
+定义布局时需要声明头部视图的id{@link HeadZoomLayout#headViewId}，
+同时需要将头部中的背景图片（ImageView对象）scaleType设置为centerCrop
 
 [![](https://jitpack.io/v/old-traveler/HeadZoomLayout.svg)](https://jitpack.io/#old-traveler/HeadZoomLayout)
 
