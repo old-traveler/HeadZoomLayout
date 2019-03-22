@@ -360,19 +360,13 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
           break;
         case MotionEvent.ACTION_UP:
           performClick();
-          pointerIndex = ev.findPointerIndex(this.mActivePointerId);
-          if (pointerIndex < 0) {
-            return false;
-          }
           this.isHorizontalMove = false;
 
           if (this.mIsBeingDragged) {
-            y = ev.getY(pointerIndex);
-            overscrollTop = (y - this.mInitialMotionY);
             this.mIsBeingDragged = false;
             this.mReturningToStart = false;
             //回弹头部
-            this.recoveryHeadView(overscrollTop);
+            this.recoveryHeadView();
           }
 
           this.mActivePointerId = INVALID_POINTER;
@@ -420,11 +414,11 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
   /**
    * 回弹头部视图
    */
-  private void recoveryHeadView(float distance) {
-    if (distance <= 0 && getZoomDistance() == 0) {
+  private void recoveryHeadView() {
+    float distance = getZoomDistance();
+    if (distance == 0) {
       return;
     }
-    distance = getZoomDistance();
     //开启回弹动画
     recoverAnimator = ObjectAnimator.ofFloat(distance, 0.0F)
         .setDuration((long) (150L * distance / maxZoomRatio / headViewHeight));
@@ -604,7 +598,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     this.mNestedScrollInProgress = false;
     if (this.mTotalUnconsumed > 0.0F) {
       //停止嵌套滑动时，恢复头部视图
-      this.recoveryHeadView(mTotalUnconsumed);
+      this.recoveryHeadView();
     }
     this.mTotalUnconsumed = 0.0F;
     this.stopNestedScroll();
