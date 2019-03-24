@@ -1,6 +1,9 @@
 # HeadZoomLayout
-一个可以下拉放大头部背景图的布局控件
-非入侵式、不影响子View的滑动。类似于SwipeRefreshLayout
+[![](https://jitpack.io/v/old-traveler/HeadZoomLayout.svg)](https://jitpack.io/#old-traveler/HeadZoomLayout)
+
+一个可以下拉放大头部背景图的布局控件，可轻松实现下拉放大头部背景图和QQ个人信息页面下拉扩展并放大背景图效果
+
+非入侵式，不干扰业务代码、不影响子View的滑动。类似于官方的SwipeRefreshLayout
 
 可包裹以下控件使用
 * RecyclerView
@@ -10,7 +13,6 @@
 * LinearLayout等
 
 
-[![](https://jitpack.io/v/old-traveler/HeadZoomLayout.svg)](https://jitpack.io/#old-traveler/HeadZoomLayout)
 
 ## 效果展示
 
