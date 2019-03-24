@@ -18,7 +18,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import java.util.List;
  * 作者：贺宇成
  * 时间：2019.3.20
  * 描述：可放大头部背景图的布局
- * 支持RecyclerView、ScrollView、NestScrollView、LinearLayout等
+ * 支持RecyclerView、ListView、ScrollView、NestScrollView、LinearLayout等
  * 定义布局时需要声明头部视图的id{@link HeadZoomLayout#headViewId}，
  * 同时需要将头部中的背景图片（ImageView对象）scaleType设置为centerCrop
  * {@link ImageView#setScaleType(ImageView.ScaleType)}。
@@ -67,6 +66,8 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
   private float dragAccelerationRatio;
   private List<OnHeadZoomListener> onHeadZoomListeners;
   private boolean isHorizontalMove = false;
+  private boolean isVerticalMove = false;
+  private float dragDistance = 0;
 
   public HeadZoomLayout(Context context) {
     this(context, null);
@@ -96,9 +97,9 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     maxZoomRatio = typedArray.getFloat(R.styleable.HeadZoomLayout_maxZoomRatio, 1.0f);
     headViewId = typedArray.getResourceId(R.styleable.HeadZoomLayout_headViewId, 0);
     this.setEnabled(typedArray.getBoolean(R.styleable.HeadZoomLayout_zoomEnable, true));
-    mTotalDragDistance = typedArray.getFloat(R.styleable.HeadZoomLayout_maxDragDistance, 3000f);
+    mTotalDragDistance = typedArray.getFloat(R.styleable.HeadZoomLayout_maxDragDistance, 1000f);
     dragAccelerationRatio =
-        typedArray.getFloat(R.styleable.HeadZoomLayout_dragAccelerationRatio, 7.0f);
+        typedArray.getFloat(R.styleable.HeadZoomLayout_dragAccelerationRatio, 3.0f);
     typedArray.recycle();
   }
 
@@ -120,10 +121,9 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
    */
   private float lastY;
   /**
-   * 兼容ScrollView
-   * 是否给ScrollView传递过down事件
+   * 是否给子View传递过down事件
    */
-  private boolean isDownToScrollView = false;
+  private boolean isDownToChildView = false;
 
   /**
    * 父布局拦截子View的事件导致子View无法继续继续获取TouchEvent
@@ -155,15 +155,19 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
       if (ev.getActionMasked() == MotionEvent.ACTION_MOVE
           && this.isEnabled()
           && this.mReturningToStart) {
-        //兼容ScrollView传递一个down事件，初始化ScrollView滑动能力
-        if (!isDownToScrollView && childView instanceof ScrollView) {
+        //给ChildView传递一个down事件（在ScrollView中需要down事件来初始化滑动状态）
+        if (!isDownToChildView) {
           ev.setAction(MotionEvent.ACTION_DOWN);
-          isDownToScrollView = true;
+          isDownToChildView = true;
         }
         try {
           lastY = ev.getY(ev.findPointerIndex(ev.getPointerId(mActivePointerId)));
         } catch (IllegalArgumentException e) {
           e.printStackTrace();
+          //子View中切换了手指
+          if (ev.getY() >= 0){
+            lastY = ev.getY();
+          }
         }
         return childView.dispatchTouchEvent(ev);
       } else {
@@ -183,13 +187,14 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
       this.mReturningToStart = false;
     }
 
-    if (this.isDownToScrollView && action == MotionEvent.ACTION_DOWN) {
-      //复位给ScrollView传递down事件标志
-      isDownToScrollView = false;
+    if (this.isDownToChildView && action == MotionEvent.ACTION_DOWN) {
+      //复位给ChildView传递down事件标志
+      isDownToChildView = false;
     }
 
-    if (this.isHorizontalMove && action == MotionEvent.ACTION_DOWN){
+    if (action == MotionEvent.ACTION_DOWN){
       this.isHorizontalMove = false;
+      this.isVerticalMove = false;
     }
 
     if (this.isEnabled()
@@ -236,7 +241,11 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
           float distanceY = Math.abs(y - mInitialDownY);
           float distanceX = Math.abs(x - mInitialDownX);
           this.startDragging(y);
+          if (distanceY > mTouchSlop){
+            isVerticalMove = true;
+          }
           if (!this.mIsBeingDragged
+              && !this.isVerticalMove
               && distanceX > mTouchSlop
               && distanceX > distanceY) {
             //当前为横向滑动时，不拦截事件，兼容横向滑动控件
@@ -272,7 +281,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
       return false;
     }
     float y = ev.getY(pointerIndex);
-    float yDiff = y - this.mInitialMotionY;
+    float yDiff = y - this.lastY;
     return isChildScrollToTop() && yDiff > 0;
   }
 
@@ -280,14 +289,15 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
    * 开始拖拽
    */
   private void startDragging(float y) {
-    if (recoverAnimator != null && recoverAnimator.isRunning()) {
-      return;
-    }
     float yDiff = y - this.mInitialDownY;
     if (yDiff > (float) this.mTouchSlop && !this.mIsBeingDragged) {
+      if (recoverAnimator != null && recoverAnimator.isRunning()) {
+        recoverAnimator.cancel();
+      }
       //记录拖拽起始点，并更新拖拽标识
-      this.mInitialMotionY = this.mInitialDownY + (float) this.mTouchSlop;
+      this.mInitialMotionY = y;
       this.mIsBeingDragged = true;
+      dragDistance = 0.0F;
     }
   }
 
@@ -336,12 +346,13 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     if (this.mReturningToStart && action == MotionEvent.ACTION_DOWN) {
       this.mReturningToStart = false;
     }
-    if (this.isDownToScrollView && action == MotionEvent.ACTION_DOWN) {
-      this.isDownToScrollView = false;
+    if (this.isDownToChildView && action == MotionEvent.ACTION_DOWN) {
+      this.isDownToChildView = false;
     }
 
-    if (this.isHorizontalMove && action == MotionEvent.ACTION_DOWN){
+    if (action == MotionEvent.ACTION_DOWN){
       this.isHorizontalMove = false;
+      this.isVerticalMove = false;
     }
 
     if (this.isEnabled()
@@ -356,18 +367,18 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
         case MotionEvent.ACTION_DOWN:
           this.mActivePointerId = ev.getPointerId(0);
           this.mIsBeingDragged = false;
-          this.isHorizontalMove = false;
           break;
+        case MotionEvent.ACTION_CANCEL:
         case MotionEvent.ACTION_UP:
-          performClick();
-          this.isHorizontalMove = false;
-
-          if (this.mIsBeingDragged) {
-            this.mIsBeingDragged = false;
-            this.mReturningToStart = false;
-            //回弹头部
-            this.recoveryHeadView();
+          if (action == MotionEvent.ACTION_UP){
+            performClick();
           }
+
+          this.mIsBeingDragged = false;
+          this.mReturningToStart = false;
+          //回弹头部
+          this.recoveryHeadView();
+
 
           this.mActivePointerId = INVALID_POINTER;
           return false;
@@ -381,17 +392,26 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
           this.startDragging(y);
           if (this.mIsBeingDragged) {
             overscrollTop = (y - this.mInitialMotionY);
-            if (overscrollTop < 0.0F && getZoomDistance() == 0) {
+            this.mInitialMotionY = y;
+            if (overscrollTop > 0){
+              overscrollTop *= 0.6f;
+            }
+            //放大头部
+            this.dragDistance += overscrollTop;
+            if (this.dragDistance > mTotalDragDistance){
+              this.dragDistance = mTotalDragDistance;
+            }
+            if (this.dragDistance < 0.0F && getZoomDistance() == 0) {
               //头图已经复原，且向下滑动，交给子View处理
+              this.dragDistance = 0.0F;
+              this.isDownToChildView = false;
               mReturningToStart = true;
               return false;
             }
-            //放大头部
-            this.zoomChildView(overscrollTop);
+
+            this.zoomChildView(this.dragDistance);
           }
           break;
-        case MotionEvent.ACTION_CANCEL:
-          return false;
         case MotionEvent.ACTION_OUTSIDE:
         default:
           break;
@@ -400,7 +420,14 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
           if (pointerIndex < 0) {
             return false;
           }
+          if (!mIsBeingDragged){
+            this.mInitialDownY = ev.getY(pointerIndex);
+            this.mInitialDownX = ev.getX(pointerIndex);
+          }
           this.mActivePointerId = ev.getPointerId(pointerIndex);
+          if (mIsBeingDragged){
+            mInitialMotionY = ev.getY(pointerIndex);
+          }
           break;
         case MotionEvent.ACTION_POINTER_UP:
           this.onSecondaryPointerUp(ev);
@@ -421,7 +448,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     }
     //开启回弹动画
     recoverAnimator = ObjectAnimator.ofFloat(distance, 0.0F)
-        .setDuration((long) (150L * distance / maxZoomRatio / headViewHeight));
+        .setDuration((long) (300L * distance / maxZoomRatio / headViewHeight));
     recoverAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
       public void onAnimationUpdate(ValueAnimator animation) {
@@ -485,6 +512,10 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     if (pointerId == mActivePointerId) {
       final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
       mActivePointerId = ev.getPointerId(newPointerIndex);
+      mInitialMotionY = ev.getY(newPointerIndex);
+      if (!mIsBeingDragged){
+        mInitialDownY = mInitialMotionY;
+      }
     }
   }
 
@@ -612,7 +643,11 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     int dy = dyUnconsumed + this.mParentOffsetInWindow[1];
     if (dy < 0 && this.isChildScrollToTop()) {
       //嵌套滑动时放大头部，mTotalUnconsumed为下拉距离
+      dy *= 0.6f;
       this.mTotalUnconsumed += (float) Math.abs(dy);
+      if (this.mTotalUnconsumed > mTotalDragDistance){
+        this.mTotalUnconsumed = mTotalDragDistance;
+      }
       this.zoomChildView(this.mTotalUnconsumed);
     }
   }
