@@ -16,16 +16,15 @@
 
 ## 效果展示
 
-![效果展示](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/show.gif)
-
 <div class="half">
-    <img src="https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/personal.gif" width = "400" height = "864">
-    <img src = "https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/house_detail.gif" width = "400" height = "864">
+    <img src="https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/show.gif" width = "350" height = "756">
+    <img src="https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/personal.gif" width = "350" height = "756">
+    <img src = "https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/house_detail.gif" width = "350" height = "756">
 </div>
 
 
 
-## 使用示例
+## 使用
 
 定义布局时需要声明头部视图的id{@link HeadZoomLayout#headViewId}，
 同时需要将头部中的背景图片（ImageView对象）scaleType设置为centerCrop
@@ -46,55 +45,117 @@ dependencies {
 }
 ```
 
+### 嵌套LinearLayout使用
+
 ```xml
 <com.hyc.headzoomlayout.HeadZoomLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:headViewId="@id/fl_head">
+    <!--嵌套LinearLayout使用-->
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical">
-      //头部视图
+      <!--头部视图-->
       <FrameLayout
         android:id="@+id/fl_head"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@color/colorAccent">
-        //给ImageView设置中心剪裁方式 android:scaleType="centerCrop"
+        <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
         <ImageView
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:scaleType="centerCrop"
           android:src="@mipmap/test" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-          android:id="@+id/profile_image"
-          android:layout_width="96dp"
-          android:layout_height="96dp"
-          android:layout_gravity="center_horizontal|bottom"
-          android:layout_marginBottom="35dp"
-          android:src="@mipmap/ic_logo"
-          app:civ_border_color="#F7F6F6"
-          app:civ_border_width="2dp" />
-
-        <TextView
-          android:id="@+id/tv_phone"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal|bottom"
-          android:layout_marginBottom="5dp"
-          android:textColor="@color/white"
-          android:textSize="20sp"
-          tools:text="152****1295" />
-
+        //...
+        
       </FrameLayout>
       
       //...
     </LinearLayout>
-
   </com.hyc.headzoomlayout.HeadZoomLayout>
 
 ```
+
+### 嵌套ScrollView或NestedScrollView
+
+```xml
+<com.hyc.headzoomlayout.HeadZoomLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:headViewId="@id/fl_head">
+    <!--嵌套ScrollView或者NestedScrollView使用-->
+     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+           <!--头部视图-->
+           <FrameLayout
+             android:id="@+id/fl_head"
+             android:layout_width="match_parent"
+             android:layout_height="150dp"
+             android:background="@color/colorAccent">
+             <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
+             <ImageView
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:scaleType="centerCrop"
+               android:src="@mipmap/test" />
+             //...
+             
+           </FrameLayout>
+           
+           //...
+        </LinearLayout>
+     </ScrollView>
+    
+  </com.hyc.headzoomlayout.HeadZoomLayout>
+
+```
+
+### 嵌套RecyclerView或ListView
+
+使用动态添加Head的形式并将其id设置HeadZoomLayout中headViewId
+or
+多样式布局时设置第一个Item的布局id为HeadZoomLayout中的headViewId
+
+```xml
+  <!--主布局-->
+  <com.hyc.headzoomlayout.HeadZoomLayout
+    app:headViewId="@id/fl_head"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <ListView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+    
+  </com.hyc.headzoomlayout.HeadZoomLayout>
+  
+  <!--head布局，在代码中添加到ListView或者RecyclerView中-->
+  <FrameLayout
+     android:id="@+id/fl_head"
+     android:layout_width="match_parent"
+     android:layout_height="150dp"
+     android:background="@color/colorAccent">
+     <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
+     <ImageView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:scaleType="centerCrop"
+       android:src="@mipmap/test" />
+     //...
+          
+  </FrameLayout>
+```
+
+
+
+
 
 
