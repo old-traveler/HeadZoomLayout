@@ -454,7 +454,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
       public void onAnimationUpdate(ValueAnimator animation) {
         float distance = (float) animation.getAnimatedValue();
         zoomHeadView(distance);
-        dispatchHeadZoomEvent(true, 0, distance);
+        dispatchHeadZoomEvent(true, distance);
       }
     });
     recoverAnimator.start();
@@ -470,17 +470,17 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     overscrollTop = percent * (maxZoomRatio * headViewHeight);
     //放大头图
     zoomHeadView(overscrollTop);
-    dispatchHeadZoomEvent(false, pullDistance, overscrollTop);
+    dispatchHeadZoomEvent(false, overscrollTop);
   }
 
   /**
    * 分发头图放大事件
    */
-  private void dispatchHeadZoomEvent(boolean isRecovering, float pullDistance, float zoomDistance) {
+  private void dispatchHeadZoomEvent(boolean isRecovering, float zoomDistance) {
     if (onHeadZoomListeners != null && onHeadZoomListeners.size() > 0) {
       for (OnHeadZoomListener onHeadZoomListener : onHeadZoomListeners) {
         if (onHeadZoomListener != null) {
-          onHeadZoomListener.onHeadZoom(isRecovering, pullDistance, zoomDistance);
+          onHeadZoomListener.onHeadZoom(isRecovering, zoomDistance);
         }
       }
     }
@@ -752,9 +752,8 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
      * 头部背景图方法监听
      *
      * @param isRecovering 是否在执行回弹动画
-     * @param pullDistance 手指下滑的距离（回弹动画时为0）
      * @param zoomDistance 真实放大的距离
      */
-    void onHeadZoom(boolean isRecovering, float pullDistance, float zoomDistance);
+    void onHeadZoom(boolean isRecovering, float zoomDistance);
   }
 }
