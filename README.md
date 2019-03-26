@@ -1,5 +1,6 @@
 # HeadZoomLayout
-[![](https://jitpack.io/v/old-traveler/HeadZoomLayout.svg)](https://jitpack.io/#old-traveler/HeadZoomLayout)
+[![](https://jitpack.io/v/old-traveler/HeadZoomLayout.svg)](https://jitpack.io/#old-traveler/HeadZoomLayout)&nbsp;&nbsp;
+ [![AppVeyor](https://img.shields.io/badge/build-passing-green.svg)](https://github.com/old-traveler/HeadZoomLayout)
 
 一个可以下拉放大头部背景图的布局控件，可轻松实现下拉放大头部背景图和QQ个人信息页面下拉扩展并放大背景图效果
 
