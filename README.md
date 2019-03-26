@@ -18,6 +18,10 @@
 
 ![效果展示](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/show.gif)
 
+![效果展示](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/personal.gif)
+
+![效果展示](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/house_detail.gif)
+
 ## 使用示例
 
 定义布局时需要声明头部视图的id{@link HeadZoomLayout#headViewId}，
