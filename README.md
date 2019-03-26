@@ -28,6 +28,8 @@
 定义布局时需要声明头部视图的id{@link HeadZoomLayout#headViewId}，
 同时需要将头部中的背景图片（ImageView对象）scaleType设置为centerCrop
 
+如需实现类似于QQ个人信息界面中下拉扩展并放大效果只需保证头部的宽高比大于图片的宽高比即可。
+
 
 ```groovy
 allprojects {
@@ -48,33 +50,33 @@ dependencies {
 
 ```xml
 <com.hyc.headzoomlayout.HeadZoomLayout
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:headViewId="@id/fl_head">
+  <!--嵌套LinearLayout使用-->
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:headViewId="@id/fl_head">
-    <!--嵌套LinearLayout使用-->
-    <LinearLayout
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!--头部视图-->
+    <FrameLayout
+      android:id="@+id/fl_head"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
-      <!--头部视图-->
-      <FrameLayout
-        android:id="@+id/fl_head"
+      android:layout_height="150dp"
+      android:background="@color/colorAccent">
+      <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
+      <ImageView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/colorAccent">
-        <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
-        <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:scaleType="centerCrop"
-          android:src="@mipmap/test" />
-        //...
-        
-      </FrameLayout>
-      
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/test" />
       //...
-    </LinearLayout>
-  </com.hyc.headzoomlayout.HeadZoomLayout>
+      
+    </FrameLayout>
+    
+    //...
+  </LinearLayout>
+</com.hyc.headzoomlayout.HeadZoomLayout>
 
 ```
 
@@ -82,38 +84,37 @@ dependencies {
 
 ```xml
 <com.hyc.headzoomlayout.HeadZoomLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:headViewId="@id/fl_head">
-    <!--嵌套ScrollView或者NestedScrollView使用-->
-     <ScrollView
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:headViewId="@id/fl_head">
+  <!--嵌套ScrollView或者NestedScrollView使用-->
+  <ScrollView
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="vertical">
-           <!--头部视图-->
-           <FrameLayout
-             android:id="@+id/fl_head"
-             android:layout_width="match_parent"
-             android:layout_height="150dp"
-             android:background="@color/colorAccent">
-             <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
-             <ImageView
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:scaleType="centerCrop"
-               android:src="@mipmap/test" />
-             //...
-             
-           </FrameLayout>
-           
-           //...
-        </LinearLayout>
-     </ScrollView>
-    
-  </com.hyc.headzoomlayout.HeadZoomLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--头部视图-->
+        <FrameLayout
+          android:id="@+id/fl_head"
+          android:layout_width="match_parent"
+          android:layout_height="150dp"
+          android:background="@color/colorAccent">
+          <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
+          <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/test" />
+          //...
+          
+        </FrameLayout>
+        
+        //...
+     </LinearLayout>
+  </ScrollView>
+</com.hyc.headzoomlayout.HeadZoomLayout>
 
 ```
 
@@ -124,33 +125,32 @@ or
 多样式布局时设置第一个Item的布局id为HeadZoomLayout中的headViewId
 
 ```xml
-  <!--主布局-->
-  <com.hyc.headzoomlayout.HeadZoomLayout
-    app:headViewId="@id/fl_head"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <ListView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
-    
-  </com.hyc.headzoomlayout.HeadZoomLayout>
+<!--主布局-->
+<com.hyc.headzoomlayout.HeadZoomLayout
+  app:headViewId="@id/fl_head"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
   
-  <!--head布局，在代码中添加到ListView或者RecyclerView中-->
-  <FrameLayout
-     android:id="@+id/fl_head"
+  <ListView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+  
+</com.hyc.headzoomlayout.HeadZoomLayout>
+
+<!--head布局，在代码中添加到ListView或者RecyclerView中-->
+<FrameLayout
+   android:id="@+id/fl_head"
+   android:layout_width="match_parent"
+   android:layout_height="150dp"
+   android:background="@color/colorAccent">
+   <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
+   <ImageView
      android:layout_width="match_parent"
-     android:layout_height="150dp"
-     android:background="@color/colorAccent">
-     <!--给背景ImageView设置中心剪裁方式 android:scaleType="centerCrop"-->
-     <ImageView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:scaleType="centerCrop"
-       android:src="@mipmap/test" />
-     //...
-          
-  </FrameLayout>
+     android:layout_height="match_parent"
+     android:scaleType="centerCrop"
+     android:src="@mipmap/test" />
+   //...  
+</FrameLayout>
 ```
 
 
