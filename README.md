@@ -47,6 +47,11 @@ dependencies {
 }
 ```
 
+
+| headViewId | maxZoomRatio | zoomEnable | maxDragDistance| dragAccelerationRatio|
+| ------ | ------ | ------ | ------ |------ |
+| 头部视图id | 头部最大放大比例 | 是否可以放大头部 | 最大拖拽距离 | 放大加速度比例 |
+
 ### 嵌套LinearLayout使用
 
 ```xml
