@@ -1,18 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".MainActivity">
 
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Hello World!"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+  <com.hyc.headzoomlayout.HeadZoomLayout
+    app:headViewId="@id/fl_head"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <FrameLayout
+        android:id="@+id/fl_head"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorAccent">
+
+        <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="centerCrop"
+          android:src="@mipmap/ttt" />
+
+
+
+        <TextView
+          android:id="@+id/tv_phone"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal|bottom"
+          android:layout_marginBottom="5dp"
+          android:textSize="20sp"
+          tools:text="152****1295" />
+
+      </FrameLayout>
+
+      <FrameLayout
+        android:id="@+id/fl_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_marginLeft="5dp"
+          android:text="  用户名"
+          android:textSize="15sp" />
+
+        <TextView
+          android:id="@+id/tv_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:layout_marginRight="20dp"
+          android:text="152*****1295"
+          android:textSize="15sp" />
+
+      </FrameLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+         />
+
+      <FrameLayout
+        android:id="@+id/fl_sex"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_marginLeft="5dp"
+          android:text="  性别"
+          android:textSize="15sp" />
+
+        <TextView
+          android:id="@+id/tv_sex"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:layout_marginRight="20dp"
+          android:text="男"
+          android:textSize="15sp" />
+
+      </FrameLayout>
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+      <FrameLayout
+        android:id="@+id/fl_follow"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_marginLeft="5dp"
+          android:text="  我的收藏"
+          android:textSize="15sp" />
+      </FrameLayout>
+
+      <TextView
+        android:id="@+id/tv_login_out"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="退出登录"
+        android:textSize="15sp" />
+    </LinearLayout>
+
+
+  </com.hyc.headzoomlayout.HeadZoomLayout>
+
+</FrameLayout>

@@ -297,8 +297,17 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
       //记录拖拽起始点，并更新拖拽标识
       this.mInitialMotionY = y;
       this.mIsBeingDragged = true;
-      dragDistance = 0.0F;
+      dragDistance = getOverPlusDistance();
     }
+  }
+
+  private float getOverPlusDistance(){
+    float zoomDistance = getZoomDistance();
+    if (zoomDistance == 0){
+      return 0.0F;
+    }
+    return (float) (mTotalDragDistance * (1 - Math.pow(
+        1 - zoomDistance / maxZoomRatio / headViewHeight, 1.0f / dragAccelerationRatio)))/0.6f;
   }
 
   @Override
@@ -466,7 +475,6 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     if (overscrollTop < 0) overscrollTop = 0;
     float percent =
         (float) (1 - Math.pow((1 - overscrollTop / mTotalDragDistance), dragAccelerationRatio));
-    float pullDistance = overscrollTop;
     overscrollTop = percent * (maxZoomRatio * headViewHeight);
     //放大头图
     zoomHeadView(overscrollTop);
@@ -619,7 +627,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
   public void onNestedScrollAccepted(View child, View target, int axes) {
     this.mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
     this.startNestedScroll(axes & 2);
-    this.mTotalUnconsumed = 0.0F;
+    this.mTotalUnconsumed = getOverPlusDistance();
     this.mNestedScrollInProgress = true;
   }
 
