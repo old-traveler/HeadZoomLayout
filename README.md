@@ -18,8 +18,7 @@
 ## 效果展示
 
 <div class="half">
-    <img src="https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/personal.gif1" width = "350" height = "756">
-    <img src = "https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/house_detail1.gif" width = "350" height = "756">
+    <img src="https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/show.gif" width = "350" height = "756">
 </div>
 
 
