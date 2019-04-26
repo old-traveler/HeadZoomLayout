@@ -45,9 +45,9 @@ dependencies {
 ```
 
 
-| headViewId | maxZoomRatio | zoomEnable | maxDragDistance| dragAccelerationRatio|
-| ------ | ------ | ------ | ------ |------ |
-| 头部视图id | 头部最大放大比例 | 是否可以放大头部 | 最大拖拽距离 | 加速度减小系数 |
+| headViewId | maxZoomRatio | zoomEnable | maxDragDistance| dragAccelerationRatio|useDecelerateInterpolator|
+| ------ | ------ | ------ | ------ |------ | ------ |
+| 头部视图id | 头部最大放大比例 | 是否可以放大头部 | 最大拖拽距离 | 加速度减小系数 | 回弹动画使用减速插值器
 
 ### 嵌套LinearLayout使用
 
