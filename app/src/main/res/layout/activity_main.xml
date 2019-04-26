@@ -8,9 +8,11 @@
 
 
   <com.hyc.headzoomlayout.HeadZoomLayout
-    app:headViewId="@id/fl_head"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:headViewId="@id/fl_head"
+    app:maxZoomRatio="1.1"
+    app:maxDragDistance="1500">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -19,112 +21,31 @@
       <FrameLayout
         android:id="@+id/fl_head"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/colorAccent">
+        android:layout_height="250dp">
 
         <ImageView
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:scaleType="centerCrop"
-          android:src="@mipmap/ttt" />
-
-
+          android:src="@drawable/background" />
 
         <TextView
-          android:id="@+id/tv_phone"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center_horizontal|bottom"
           android:layout_marginBottom="5dp"
+          android:textColor="#ffffff"
           android:textSize="20sp"
-          tools:text="152****1295" />
+          android:text="HeadZoomLayout" />
 
       </FrameLayout>
-
-      <FrameLayout
-        android:id="@+id/fl_name"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true">
-
-        <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          android:layout_marginLeft="5dp"
-          android:text="  用户名"
-          android:textSize="15sp" />
-
-        <TextView
-          android:id="@+id/tv_name"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="end|center_vertical"
-          android:layout_marginRight="20dp"
-          android:text="152*****1295"
-          android:textSize="15sp" />
-
-      </FrameLayout>
-
-      <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-         />
-
-      <FrameLayout
-        android:id="@+id/fl_sex"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true">
-
-        <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          android:layout_marginLeft="5dp"
-          android:text="  性别"
-          android:textSize="15sp" />
-
-        <TextView
-          android:id="@+id/tv_sex"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="end|center_vertical"
-          android:layout_marginRight="20dp"
-          android:text="男"
-          android:textSize="15sp" />
-
-      </FrameLayout>
-
-      <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
-
-      <FrameLayout
-        android:id="@+id/fl_follow"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true">
-
-        <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          android:layout_marginLeft="5dp"
-          android:text="  我的收藏"
-          android:textSize="15sp" />
-      </FrameLayout>
-
       <TextView
-        android:id="@+id/tv_login_out"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="退出登录"
+        android:text="Content"
         android:textSize="15sp" />
     </LinearLayout>
 

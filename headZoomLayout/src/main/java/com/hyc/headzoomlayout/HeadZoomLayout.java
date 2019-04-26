@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
   private View headView;
   private View childView;
   private float headViewHeight;
+  private float headViewWidth;
   private float mInitialDownY;
   private int mTouchSlop;
   private float mTotalDragDistance;
@@ -68,6 +70,8 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
   private boolean isHorizontalMove = false;
   private boolean isVerticalMove = false;
   private float dragDistance = 0;
+  private float mZoomDistance = 0;
+  private DecelerateInterpolator decelerateInterpolator;
 
   public HeadZoomLayout(Context context) {
     this(context, null);
@@ -100,6 +104,10 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     mTotalDragDistance = typedArray.getFloat(R.styleable.HeadZoomLayout_maxDragDistance, 1000f);
     dragAccelerationRatio =
         typedArray.getFloat(R.styleable.HeadZoomLayout_dragAccelerationRatio, 3.0f);
+    boolean useDecelerateInterpolator = typedArray.getBoolean(R.styleable.HeadZoomLayout_useDecelerateInterpolator,true);
+    if (useDecelerateInterpolator){
+      decelerateInterpolator = new DecelerateInterpolator();
+    }
     typedArray.recycle();
   }
 
@@ -452,12 +460,15 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
    */
   private void recoveryHeadView() {
     float distance = getZoomDistance();
-    if (distance == 0) {
+    if (distance <= 0) {
       return;
     }
     //开启回弹动画
     recoverAnimator = ObjectAnimator.ofFloat(distance, 0.0F)
         .setDuration((long) (300L * distance / maxZoomRatio / headViewHeight));
+    if (decelerateInterpolator != null){
+      recoverAnimator.setInterpolator(decelerateInterpolator);
+    }
     recoverAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
       public void onAnimationUpdate(ValueAnimator animation) {
@@ -498,20 +509,19 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
    * 放大头部视图
    */
   private void zoomHeadView(float distance) {
+    if (distance < 0)return;
     ViewGroup.LayoutParams layoutParams = headView.getLayoutParams();
-    layoutParams.width = headView.getMeasuredWidth();
+    layoutParams.width = (int) headViewWidth;
     layoutParams.height = (int) (headViewHeight + distance);
     headView.setLayoutParams(layoutParams);
+    mZoomDistance = distance;
   }
 
   /**
    * 获取头部放大距离
    */
   public float getZoomDistance() {
-    if (headView == null) {
-      return 0;
-    }
-    return headView.getMeasuredHeight() - headViewHeight;
+    return mZoomDistance;
   }
 
   private void onSecondaryPointerUp(MotionEvent ev) {
@@ -550,8 +560,11 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
       headView = findViewById(headViewId);
       if (headView != null) {
         headViewHeight = headView.getMeasuredHeight();
+        headViewWidth = headView.getMeasuredWidth();
+        //防止getMeasure为0导致崩溃
+        this.setEnabled(headViewWidth > 0 && headViewHeight > 0);
       } else {
-        throw new RuntimeException("not find headView by headViewId");
+        this.setEnabled(false);
       }
     }
   }

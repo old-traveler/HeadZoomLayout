@@ -12,6 +12,8 @@
     <attr format="float" name="maxDragDistance"/>
     <!--放大加速度比例-->
     <attr format="float" name="dragAccelerationRatio"/>
+    <!--是否开启减速回弹模式-->
+    <attr format="boolean" name="useDecelerateInterpolator"/>
   </declare-styleable>
 
 </resources>
