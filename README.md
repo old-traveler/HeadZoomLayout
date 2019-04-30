@@ -17,7 +17,7 @@
 
 ## 效果展示
 
-[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/video.webm)
+[![Watch the video](https://raw.githubusercontent.com/old-traveler/HeadZoomLayout/master/image/show_video.png)](http://bmob-cdn-12662.b0.upaiyun.com/2019/04/30/197dafc940a0f3a080ae49e291bb03aa.webm)
 
 
 
