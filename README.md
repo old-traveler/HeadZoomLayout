@@ -162,7 +162,23 @@ or
    //...  
 </FrameLayout>
 ```
-
+## 注意事项
+* 必须给代表背景的ImageView设置centerCrop剪裁模式
+* 如需实现qq那种先扩展再放大的效果，需保证图片的高宽比大于ImageView的高宽比
+* 如果使用Glide或者其他会对图片进行剪裁的图片加载库时会造成无法实现qq那种扩展放大效果。可通过ImageView.setImageDrawable来解决
+以Glide为例子,通过Drawable加载可解决问题：
+```java
+ Glide.with(context)
+        .asDrawable()
+        .load(Constant.BASE_IMAGE_URL + url)
+        .into(new SimpleTarget<Drawable>() {
+          @Override
+          public void onResourceReady(@NonNull Drawable resource,
+              @Nullable Transition<? super Drawable> transition) {
+            imageView.setImageDrawable(resource);
+          }
+        });
+```
 
 
 
