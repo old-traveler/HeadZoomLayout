@@ -45,6 +45,7 @@ dependencies {
 ```
 
 |属性名称|属性说明|默认值|
+| ---- | ----- | ----|
 |headViewId|头部视图id|0|
 |maxZoomRatio|头部最大放大比例|1.0f|
 |zoomEnable|是否可以放大头部|true|
