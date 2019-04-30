@@ -44,10 +44,15 @@ dependencies {
 }
 ```
 
+|属性名称|属性说明|默认值|
+|headViewId|头部视图id|0|
+|maxZoomRatio|头部最大放大比例|1.0f|
+|zoomEnable|是否可以放大头部|true|
+|maxDragDistance|值越大，阻尼越大|1000f|
+|dragAccelerationRatio|值越大，阻尼越大|3.0f|
+|useDecelerateInterpolator|回弹动画使用减速插值器|true|
+|maxRecoverTime|最大回弹动画时间|400L|
 
-| headViewId | maxZoomRatio | zoomEnable | maxDragDistance| dragAccelerationRatio|useDecelerateInterpolator|
-| ------ | ------ | ------ | ------ |------ | ------ |
-| 头部视图id | 头部最大放大比例 | 是否可以放大头部 | 最大拖拽距离 | 加速度减小系数 | 回弹动画使用减速插值器
 
 ### 嵌套LinearLayout使用
 
