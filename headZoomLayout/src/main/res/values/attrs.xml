@@ -14,6 +14,8 @@
     <attr format="float" name="dragAccelerationRatio"/>
     <!--是否开启减速回弹模式-->
     <attr format="boolean" name="useDecelerateInterpolator"/>
+    <!--最大回弹动画时间-->
+    <attr format="integer" name="maxRecoverTime"/>
   </declare-styleable>
 
 </resources>

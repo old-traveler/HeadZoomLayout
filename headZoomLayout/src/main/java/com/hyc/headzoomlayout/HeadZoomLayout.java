@@ -72,6 +72,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
   private float dragDistance = 0;
   private float mZoomDistance = 0;
   private DecelerateInterpolator decelerateInterpolator;
+  private long maxRecoverTime;
 
   public HeadZoomLayout(Context context) {
     this(context, null);
@@ -104,9 +105,10 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     mTotalDragDistance = typedArray.getFloat(R.styleable.HeadZoomLayout_maxDragDistance, 1000f);
     dragAccelerationRatio =
         typedArray.getFloat(R.styleable.HeadZoomLayout_dragAccelerationRatio, 3.0f);
+    maxRecoverTime = typedArray.getInt(R.styleable.HeadZoomLayout_maxRecoverTime,400);
     boolean useDecelerateInterpolator = typedArray.getBoolean(R.styleable.HeadZoomLayout_useDecelerateInterpolator,true);
     if (useDecelerateInterpolator){
-      decelerateInterpolator = new DecelerateInterpolator();
+      decelerateInterpolator = new DecelerateInterpolator(1.2f);
     }
     typedArray.recycle();
   }
@@ -465,7 +467,7 @@ public class HeadZoomLayout extends ViewGroup implements NestedScrollingParent,
     }
     //开启回弹动画
     recoverAnimator = ObjectAnimator.ofFloat(distance, 0.0F)
-        .setDuration((long) (300L * distance / maxZoomRatio / headViewHeight));
+        .setDuration((long) (maxRecoverTime * distance / maxZoomRatio / headViewHeight));
     if (decelerateInterpolator != null){
       recoverAnimator.setInterpolator(decelerateInterpolator);
     }
