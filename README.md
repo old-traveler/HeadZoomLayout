@@ -6,7 +6,7 @@
 
 非入侵式，不干扰业务代码、不影响子View的滑动。类似于官方的SwipeRefreshLayout
 
-**未支持androidx,如需兼容,可自行将HeadZoomLayout.java和相关xml文件拷贝到自己项目修改support库即可.**
+**1.0.5之后迁移androidx**
 
 可包裹以下控件使用
 * RecyclerView
